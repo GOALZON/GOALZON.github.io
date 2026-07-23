@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>تسجيل مسبق · تطبيقنا</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f8faff 0%, #eef2f9 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 48px 48px 32px 32px;
+      box-shadow: 0 20px 40px -12px rgba(0, 20, 40, 0.25), 0 8px 24px -6px rgba(0, 0, 0, 0.05);
+      padding: 28px 22px 36px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transition: all 0.2s ease;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .app-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #3b82f6, #7c3aed);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 24px -8px rgba(59, 130, 246, 0.35);
+      flex-shrink: 0;
+    }
+
+    .app-icon i {
+      font-size: 44px;
+      color: white;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+
+    .app-name {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+    }
+
+    .app-name small {
+      font-size: 16px;
+      font-weight: 400;
+      background: none;
+      color: #64748b;
+      display: block;
+      margin-top: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    /* معرض الصور - روابط صور حقيقية */
+    .gallery {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 28px 0 32px;
+      flex-wrap: wrap;
+    }
+
+    .gallery-item {
+      flex: 1 1 80px;
+      min-width: 70px;
+      height: 80px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.04);
+      border: 2px solid rgba(255,255,255,0.6);
+      transition: transform 0.15s ease;
+      background: #f1f5f9;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* زر التسجيل المسبق (ديناميكي) */
+    .pre-register-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #6d28d9);
+      border: none;
+      border-radius: 60px;
+      padding: 18px 12px;
+      font-size: 22px;
+      font-weight: 600;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      box-shadow: 0 14px 24px -8px rgba(37, 99, 235, 0.4);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
+      border: 1px solid rgba(255,255,255,0.25);
+      margin-top: 4px;
+      margin-bottom: 22px;
+      letter-spacing: 0.3px;
+    }
+
+    .pre-register-btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 8px 16px -6px #2563eb70;
+    }
+
+    .pre-register-btn i {
+      font-size: 26px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .pre-register-btn .badge-icon {
+      background: rgba(255,255,255,0.15);
+      border-radius: 40px;
+      padding: 2px 12px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    /* حالة إلغاء التسجيل */
+    .pre-register-btn.cancel-mode {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      box-shadow: 0 14px 24px -8px rgba(239, 68, 68, 0.4);
+    }
+
+    .counter-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      padding: 14px 18px;
+      border-radius: 80px;
+      margin: 10px 0 16px;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .counter-area i {
+      color: #2563eb;
+      font-size: 24px;
+    }
+
+    .counter-number {
+      font-size: 34px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      background: white;
+      padding: 0 18px;
+      border-radius: 60px;
+      line-height: 1.4;
+      min-width: 70px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .counter-label {
+      font-size: 18px;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    /* سطر الإشعار */
+    .notification-prompt {
+      margin-top: 26px;
+      padding: 14px 18px;
+      background: #ffffffcc;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      transition: all 0.2s;
+    }
+
+    .notification-prompt i {
+      color: #7c3aed;
+      font-size: 20px;
+    }
+
+    .notification-prompt span {
+      font-size: 17px;
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .notification-prompt .action-link {
+      background: #eef2ff;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+      cursor: pointer;
+      transition: 0.15s;
+      font-size: 15px;
+    }
+
+    .notification-prompt .action-link:active {
+      background: #d9e2ef;
+      transform: scale(0.96);
+    }
+
+    .toast-message {
+      margin-top: 18px;
+      background: #0f172ad9;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 60px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px solid #ffffff30;
+      font-size: 16px;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .toast-message i {
+      color: #a78bfa;
+      font-size: 18px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 420px) {
+      .app-icon { width: 68px; height: 68px; }
+      .app-icon i { font-size: 36px; }
+      .app-name { font-size: 24px; }
+      .gallery-item { height: 68px; min-width: 60px; }
+      .pre-register-btn { font-size: 19px; padding: 16px 10px; }
+      .counter-number { font-size: 28px; min-width: 60px; }
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <!-- صورة التطبيق + الاسم -->
+  <div class="app-header">
+    <div class="app-icon">
+  <img src="https://i.ibb.co/k2M3JkGZ/In-Shot-20260719-024920300.jpg" alt="شعار التطبيق" style="width:100%; height:100%; border-radius:24px; object-fit:cover;">
+</div>
+    <div class="app-name">
+      GOALZON
+      <small>v0.1 · قريباً</small>
+    </div>
+  </div>
+
+  <!-- معرض صور من التطبيق (روابط حقيقية) -->
+  <div class="gallery">
+    <div class="gallery-item"><img src="https://i.ibb.co/k2M3JkGZ/In-Shot-20260719-024920300.jpg" alt="صورة 1"></div>
+    <div class="gallery-item"><img src="https://i.ibb.co/zVm2cY6z/5.jpg" alt="صورة 2"></div>
+    <div class="gallery-item"><img src="https://i.ibb.co/zhnrH9GY/2.jpg" alt="صورة 3"></div>
+    <div class="gallery-item"><img src="https://i.ibb.co/H6s2zHy/Picsart-26-07-23-12-59-36-221.jpg" alt="صورة 4"></div>
+  </div>
+
+  <!-- زر التسجيل المسبق (ديناميكي) -->
+  <button class="pre-register-btn" id="preRegisterBtn">
+    <i class="fas fa-pen-to-square"></i>
+    <span id="btnText">سجّل مسبقاً</span>
+    <span class="badge-icon"><i class="fas fa-arrow-left"></i></span>
+  </button>
+
+  <!-- عداد التسجيلات (دائم) -->
+  <div class="counter-area">
+    <i class="fas fa-users"></i>
+    <span class="counter-label">المسجلون</span>
+    <span class="counter-number" id="counterDisplay">128</span>
+  </div>
+
+  <!-- سطر الإشعار (يظهر عند التسجيل) -->
+  <div id="notificationRow" class="notification-prompt hidden fade-in">
+    <i class="fas fa-bell"></i>
+    <span>نُرسل لك إشعاراً عند الإصدار؟</span>
+    <span class="action-link" id="notifyYesBtn">نعم</span>
+    <span class="action-link" id="notifyCancelBtn">لاحقاً</span>
+  </div>
+
+  <!-- رسالة تأكيد -->
+  <div id="toastMessage" class="toast-message hidden fade-in">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastText">تم الاشتراك في الإشعارات!</span>
+  </div>
+</div>
+
+<script>
+  (function() {
+    "use strict";
+
+    // عناصر DOM
+    const preRegisterBtn = document.getElementById('preRegisterBtn');
+    const btnText = document.getElementById('btnText');
+    const counterDisplay = document.getElementById('counterDisplay');
+    const notificationRow = document.getElementById('notificationRow');
+    const toastMessage = document.getElementById('toastMessage');
+    const toastText = document.getElementById('toastText');
+    const notifyYesBtn = document.getElementById('notifyYesBtn');
+    const notifyCancelBtn = document.getElementById('notifyCancelBtn');
+
+    // الحالة الأساسية
+    let registrationCount =0 ;          // عدد التسجيلات الحقيقي (دائم)
+    let isRegistered = false;            // هل المستخدم مسجل حالياً؟
+    let isNotificationVisible = false;
+    let toastTimer = null;
+
+    // تحديث العداد في الواجهة
+    function updateCounterDisplay() {
+      counterDisplay.textContent = registrationCount;
+    }
+
+    // إظهار رسالة toast
+    function showToast(message, isSuccess = true) {
+      if (toastTimer) {
+        clearTimeout(toastTimer);
+        toastTimer = null;
+      }
+      toastText.textContent = message;
+      toastMessage.classList.remove('hidden');
+      toastMessage.classList.add('fade-in');
+      // أيقونة مختلفة حسب النوع
+      const icon = toastMessage.querySelector('i');
+      if (isSuccess) {
+        icon.className = 'fas fa-check-circle';
+        icon.style.color = '#a78bfa';
+      } else {
+        icon.className = 'fas fa-circle-info';
+        icon.style.color = '#fbbf24';
+      }
+      toastTimer = setTimeout(() => {
+        toastMessage.classList.add('hidden');
+        toastMessage.classList.remove('fade-in');
+        toastTimer = null;
+      }, 3000);
+    }
+
+    // إخفاء سطر الإشعار
+    function hideNotificationRow() {
+      notificationRow.classList.add('hidden');
+      notificationRow.classList.remove('fade-in');
+      isNotificationVisible = false;
+    }
+
+    // إظهار سطر الإشعار
+    function showNotificationPrompt() {
+      if (isNotificationVisible) {
+        hideNotificationRow();
+        setTimeout(() => {
+          notificationRow.classList.remove('hidden');
+          notificationRow.classList.add('fade-in');
+          isNotificationVisible = true;
+        }, 80);
+        return;
+      }
+      notificationRow.classList.remove('hidden');
+      notificationRow.classList.add('fade-in');
+      isNotificationVisible = true;
+    }
+
+    // تحديث مظهر الزر حسب الحالة
+    function updateButtonState() {
+      if (isRegistered) {
+        preRegisterBtn.classList.add('cancel-mode');
+        btnText.textContent = 'إلغاء التسجيل';
+        // تغيير الأيقونة
+        const icon = preRegisterBtn.querySelector('i');
+        icon.className = 'fas fa-xmark';
+      } else {
+        preRegisterBtn.classList.remove('cancel-mode');
+        btnText.textContent = 'سجّل مسبقاً';
+        const icon = preRegisterBtn.querySelector('i');
+        icon.className = 'fas fa-pen-to-square';
+      }
+    }
+
+    // === معالج الضغط على زر التسجيل ===
+    function handlePreRegister() {
+      if (isRegistered) {
+        // ====== المستخدم مسجل مسبقاً: نطلب تأكيد إلغاء التسجيل ======
+        showToast('❗ هل تريد إلغاء التسجيل المسبق؟ اضغط مرة أخرى للتأكيد.', false);
+        // نغير سلوك الزر مؤقتاً ليصبح تأكيد الإلغاء
+        // نستخدم نفس الزر لكن نغير النص إلى "تأكيد الإلغاء" مع إعادة تعيين بعد الضغط
+        const originalText = btnText.textContent;
+        const originalIcon = preRegisterBtn.querySelector('i').className;
+        btnText.textContent = 'تأكيد الإلغاء';
+        preRegisterBtn.querySelector('i').className = 'fas fa-triangle-exclamation';
+        // نزيل المستمع القديم مؤقتاً ونضيف مستمع للإلغاء
+        preRegisterBtn.removeEventListener('click', handlePreRegister);
+        preRegisterBtn.addEventListener('click', function cancelHandler(e) {
+          // إلغاء التسجيل
+          registrationCount -= 1;
+          if (registrationCount < 0) registrationCount = 0; // أمان
+          updateCounterDisplay();
+          isRegistered = false;
+          updateButtonState();
+          hideNotificationRow();
+          showToast('✅ تم إلغاء التسجيل المسبق.', true);
+          // إعادة الزر إلى وضعه الطبيعي
+          preRegisterBtn.removeEventListener('click', cancelHandler);
+          preRegisterBtn.addEventListener('click', handlePreRegister);
+          // إعادة تعيين النص والأيقونة عبر updateButtonState
+          updateButtonState();
+        }, { once: true }); // يعمل لمرة واحدة فقط
+        // نعيد تعيين الزر بعد 5 ثوانٍ إذا لم يضغط المستخدم (لتفادي التصاق الحالة)
+        setTimeout(() => {
+          // نزيل المستمع إذا ما زال موجوداً (بعد 5 ثوان)
+          // نستبدل المستمع القديم بالمعالج الأساسي
+          preRegisterBtn.removeEventListener('click', cancelHandler);
+          preRegisterBtn.addEventListener('click', handlePreRegister);
+          if (!isRegistered) {
+            // إذا لم يتم الإلغاء نعيد المظهر الطبيعي
+            updateButtonState();
+          }
+        }, 5000);
+        return;
+      }
+
+      // ====== التسجيل المسبق (المستخدم غير مسجل) ======
+      registrationCount += 1;
+      updateCounterDisplay();
+      isRegistered = true;
+      updateButtonState();
+
+      // إظهار سؤال الإشعار
+      showNotificationPrompt();
+
+      // إخفاء أي رسالة سابقة
+      if (toastTimer) {
+        clearTimeout(toastTimer);
+        toastTimer = null;
+      }
+      toastMessage.classList.add('hidden');
+      toastMessage.classList.remove('fade-in');
+    }
+
+    // معالج "نعم" للإشعار
+    function handleNotifyYes() {
+      hideNotificationRow();
+      showToast('✅ تم الاشتراك! سنُعلمك عند الإصدار.', true);
+    }
+
+    // معالج "لاحقاً"
+    function handleNotifyCancel() {
+      hideNotificationRow();
+      showToast('⏳ حسناً، يمكنك التسجيل لاحقاً.', true);
+    }
+
+    // ربط الأحداث الأساسية
+    preRegisterBtn.addEventListener('click', handlePreRegister);
+
+    notifyYesBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      handleNotifyYes();
+    });
+
+    notifyCancelBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      handleNotifyCancel();
+    });
+
+    // تهيئة العداد
+    updateCounterDisplay();
+    updateButtonState();
+
+    // إضافة خاصية: إذا ضغط المستخدم على زر "نعم" أو "لاحقاً" يتم إخفاء سطر الإشعار تلقائياً
+    // (تمت معالجته داخل الدوال)
+
+    // منع الضغط المزدوج على زر التسجيل أثناء عملية الإلغاء (تمت معالجته)
+    // إضافة تحسين: إذا كان سطر الإشعار مفتوحاً وضغط المستخدم على زر التسجيل مرة أخرى (وهو مسجل)
+    // سيظهر خيار الإلغاء، وسيتم إخفاء الإشعار تلقائياً عند الإلغاء.
+  })();
+</script>
+</body>
+</html>
