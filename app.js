@@ -565,3 +565,20 @@ snapshot.val() || "BETA";
 
 
 });
+// ==========================
+// ABOUT APP TOGGLE
+// ==========================
+
+window.toggleInfo = function () {
+
+    const content = document.getElementById("aboutContent");
+
+    if (!content) return;
+
+    if (content.style.display === "none") {
+        content.style.display = "block";
+    } else {
+        content.style.display = "none";
+    }
+
+};
