@@ -1,472 +1,633 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>GOALZON · تسجيل مسبق</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    }
 
-    body {
-      background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
 
-    .card {
-      max-width: 480px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 48px 48px 32px 32px;
-      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      padding: 28px 22px 36px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .app-header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
-    }
+<title>GOALZON</title>
 
-    .app-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.6);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      flex-shrink: 0;
-    }
+<meta name="description" content="GOALZON - تطبيق كرة القدم">
 
-    .app-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+<link rel="stylesheet" href="style.css">
 
-    .app-name {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #facc15, #f59e0b);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      line-height: 1.1;
-    }
+<link rel="icon" href="assets/logo.jpg">
 
-    .app-name small {
-      font-size: 15px;
-      font-weight: 400;
-      background: none;
-      color: #94a3b8;
-      display: block;
-      margin-top: 2px;
-      letter-spacing: 0.3px;
-    }
-
-    .gallery {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 24px 0 30px;
-      flex-wrap: wrap;
-    }
-
-    .gallery-item {
-      flex: 1 1 75px;
-      min-width: 65px;
-      height: 75px;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      border: 2px solid rgba(255, 255, 255, 0.06);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .gallery-item:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .pre-register-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #facc15, #f59e0b);
-      border: none;
-      border-radius: 60px;
-      padding: 20px 12px;
-      font-size: 22px;
-      font-weight: 700;
-      color: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      box-shadow: 0 16px 32px -8px rgba(245, 158, 11, 0.35);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      margin-top: 4px;
-      margin-bottom: 22px;
-    }
-
-    .pre-register-btn:active {
-      transform: scale(0.96);
-      box-shadow: 0 8px 16px -6px rgba(245, 158, 11, 0.25);
-    }
-
-    .pre-register-btn i {
-      font-size: 26px;
-      color: #0f172a;
-    }
-
-    .pre-register-btn.cancel-mode {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      box-shadow: 0 16px 32px -8px rgba(239, 68, 68, 0.35);
-      color: white;
-    }
-
-    .pre-register-btn.cancel-mode i {
-      color: white;
-    }
-
-    .counter-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 18px;
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border-radius: 24px;
-      margin: 10px 0 16px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .counter-area .main-icon {
-      color: #facc15;
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
-
-    .counter-area .main-text {
-      font-size: 20px;
-      font-weight: 700;
-      color: #fef3c7;
-      text-align: center;
-      line-height: 1.7;
-    }
-
-    .counter-area .sub-text {
-      margin-top: 10px;
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .counter-area .sub-text span {
-      background: rgba(250, 204, 21, 0.12);
-      color: #fcd34d;
-      padding: 6px 16px;
-      border-radius: 40px;
-      font-size: 13px;
-      font-weight: 600;
-      border: 1px solid rgba(250, 204, 21, 0.15);
-    }
-
-    .notification-prompt {
-      margin-top: 22px;
-      padding: 16px 18px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-radius: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.2s;
-      flex-wrap: wrap;
-    }
-
-    .notification-prompt i {
-      color: #facc15;
-      font-size: 20px;
-    }
-
-    .notification-prompt span {
-      font-size: 16px;
-      font-weight: 500;
-      color: #e2e8f0;
-    }
-
-    .notification-prompt .action-link {
-      background: rgba(250, 204, 21, 0.12);
-      padding: 6px 20px;
-      border-radius: 40px;
-      font-weight: 600;
-      color: #facc15;
-      border: 1px solid rgba(250, 204, 21, 0.15);
-      cursor: pointer;
-      transition: 0.15s;
-      font-size: 14px;
-    }
-
-    .notification-prompt .action-link:active {
-      background: rgba(250, 204, 21, 0.2);
-      transform: scale(0.96);
-    }
-
-    .toast-message {
-      margin-top: 18px;
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: white;
-      padding: 14px 18px;
-      border-radius: 60px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      font-size: 15px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    }
-
-    .toast-message i {
-      color: #facc15;
-      font-size: 18px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .fade-in {
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 420px) {
-      .app-icon { width: 68px; height: 68px; }
-      .app-name { font-size: 26px; }
-      .gallery-item { height: 65px; min-width: 55px; }
-      .pre-register-btn { font-size: 19px; padding: 16px 10px; }
-      .counter-area .main-text { font-size: 17px; }
-    }
-  </style>
 </head>
+
+
 <body>
-<div class="card">
 
-  <!-- رأس التطبيق -->
-  <div class="app-header">
-    <div class="app-icon">
-      <img src="https://i.ibb.co/k2M3JkGZ/In-Shot-20260719-024920300.jpg" alt="شعار التطبيق">
-    </div>
-    <div class="app-name">
-      GOALZON
-      <small>v0.1 · قريباً</small>
-    </div>
-  </div>
 
-  <!-- معرض الصور -->
-  <div class="gallery">
-    <div class="gallery-item"><img src="https://i.ibb.co/k2M3JkGZ/In-Shot-20260719-024920300.jpg" alt="صورة 1"></div>
-    <div class="gallery-item"><img src="https://i.ibb.co/zVm2cY6z/5.jpg" alt="صورة 2"></div>
-    <div class="gallery-item"><img src="https://i.ibb.co/zhnrH9GY/2.jpg" alt="صورة 3"></div>
-    <div class="gallery-item"><img src="https://i.ibb.co/H6s2zHy/Picsart-26-07-23-12-59-36-221.jpg" alt="صورة 4"></div>
-  </div>
+<main class="container">
 
-  <!-- زر التسجيل -->
-  <button class="pre-register-btn" id="preRegisterBtn">
-    <i class="fas fa-pen-to-square"></i>
-    <span id="btnText">سجّل مسبقاً</span>
-    <span class="badge-icon" style="background: rgba(0,0,0,0.08); border-radius: 40px; padding: 2px 12px; font-size: 16px; font-weight: 500;">
-      <i class="fas fa-arrow-left"></i>
-    </span>
-  </button>
 
-  <!-- منطقة الرسالة التحفيزية (بدون عدد) -->
-  <div class="counter-area">
-    <i class="fas fa-exclamation-triangle main-icon"></i>
-    <span class="main-text">
-      ⚡ الأماكن محدودة للنسخة التجريبية الأولى – سجل الآن! ⚡
-    </span>
-    <div class="sub-text">
-      <span><i class="fas fa-clock"></i> لا تفوت الفرصة</span>
-      <span><i class="fas fa-rocket"></i> نسخة محدودة</span>
-    </div>
-  </div>
 
-  <!-- سطر الإشعار -->
-  <div id="notificationRow" class="notification-prompt hidden fade-in">
-    <i class="fas fa-bell"></i>
-    <span>نُرسل لك إشعاراً عند الإصدار؟</span>
-    <span class="action-link" id="notifyYesBtn">نعم</span>
-    <span class="action-link" id="notifyCancelBtn">لاحقاً</span>
-  </div>
+<!-- بطاقة التطبيق -->
 
-  <!-- رسالة تأكيد -->
-  <div id="toastMessage" class="toast-message hidden fade-in">
-    <i class="fas fa-check-circle"></i>
-    <span id="toastText">تم الاشتراك في الإشعارات!</span>
-  </div>
+<section class="app-card">
+
+
+<div class="app-header">
+
+
+<img src="assets/logo.jpg" class="app-logo">
+
+
+
+<div>
+
+<h1>
+GOALZON
+</h1>
+
+
+<p>
+⚽ عالم كرة القدم بين يديك
+</p>
+
+
 </div>
 
-<script>
-  (function() {
-    "use strict";
 
-    // عناصر DOM
-    const preRegisterBtn = document.getElementById('preRegisterBtn');
-    const btnText = document.getElementById('btnText');
-    const notificationRow = document.getElementById('notificationRow');
-    const toastMessage = document.getElementById('toastMessage');
-    const toastText = document.getElementById('toastText');
-    const notifyYesBtn = document.getElementById('notifyYesBtn');
-    const notifyCancelBtn = document.getElementById('notifyCancelBtn');
+</div>
 
-    // الحالة
-    let isRegistered = false;
-    let isNotificationVisible = false;
-    let toastTimer = null;
 
-    // إخفاء سطر الإشعار
-    function hideNotificationRow() {
-      notificationRow.classList.add('hidden');
-      notificationRow.classList.remove('fade-in');
-      isNotificationVisible = false;
-    }
 
-    // إظهار سطر الإشعار
-    function showNotificationPrompt() {
-      if (isNotificationVisible) {
-        hideNotificationRow();
-        setTimeout(() => {
-          notificationRow.classList.remove('hidden');
-          notificationRow.classList.add('fade-in');
-          isNotificationVisible = true;
-        }, 80);
-        return;
-      }
-      notificationRow.classList.remove('hidden');
-      notificationRow.classList.add('fade-in');
-      isNotificationVisible = true;
-    }
 
-    // إظهار رسالة toast
-    function showToast(message) {
-      if (toastTimer) {
-        clearTimeout(toastTimer);
-        toastTimer = null;
-      }
-      toastText.textContent = message;
-      toastMessage.classList.remove('hidden');
-      toastMessage.classList.add('fade-in');
-      toastTimer = setTimeout(() => {
-        toastMessage.classList.add('hidden');
-        toastMessage.classList.remove('fade-in');
-        toastTimer = null;
-      }, 3000);
-    }
 
-    // تحديث مظهر الزر
-    function updateButtonState() {
-      if (isRegistered) {
-        preRegisterBtn.classList.add('cancel-mode');
-        btnText.textContent = 'إلغاء التسجيل';
-        const icon = preRegisterBtn.querySelector('i');
-        icon.className = 'fas fa-xmark';
-      } else {
-        preRegisterBtn.classList.remove('cancel-mode');
-        btnText.textContent = 'سجّل مسبقاً';
-        const icon = preRegisterBtn.querySelector('i');
-        icon.className = 'fas fa-pen-to-square';
-      }
-    }
+<div class="app-meta">
 
-    // معالج التسجيل
-    function handlePreRegister() {
-      if (isRegistered) {
-        // إلغاء التسجيل
-        showToast('✅ تم إلغاء التسجيل المسبق.');
-        isRegistered = false;
-        updateButtonState();
-        hideNotificationRow();
-        return;
-      }
 
-      // تسجيل جديد
-      isRegistered = true;
-      updateButtonState();
-      showNotificationPrompt();
 
-      if (toastTimer) {
-        clearTimeout(toastTimer);
-        toastTimer = null;
-      }
-      toastMessage.classList.add('hidden');
-      toastMessage.classList.remove('fade-in');
-    }
+<div>
 
-    // معالج "نعم"
-    function handleNotifyYes() {
-      hideNotificationRow();
-      showToast('✅ تم الاشتراك! سنُعلمك عند الإصدار.');
-    }
+<b>
+📅
+</b>
 
-    // معالج "لاحقاً"
-    function handleNotifyCancel() {
-      hideNotificationRow();
-      showToast('⏳ حسناً، يمكنك التسجيل لاحقاً.');
-    }
+<span>
+قريباً
+</span>
 
-    // ربط الأحداث
-    preRegisterBtn.addEventListener('click', handlePreRegister);
-    notifyYesBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      handleNotifyYes();
-    });
-    notifyCancelBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      handleNotifyCancel();
-    });
 
-    // تهيئة الزر
-    updateButtonState();
-  })();
-</script>
+</div>
+
+
+
+
+<div class="line"></div>
+
+
+
+
+<div>
+
+<b>
++3
+</b>
+
+<span>
+مناسب لعمر 3 سنوات وأكثر
+</span>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<button id="registerBtn" class="main-btn">
+
+تثبيت مسبق
+
+</button>
+
+
+
+
+
+
+<!-- عداد الإطلاق -->
+
+<div class="launch-box">
+
+
+<h3>
+🚀 الإطلاق قريباً
+</h3>
+
+
+
+<div class="timer-box">
+
+
+<div>
+
+<strong id="days">
+0
+</strong>
+
+<small>
+يوم
+</small>
+
+</div>
+
+
+<div>
+
+<strong id="hours">
+0
+</strong>
+
+<small>
+ساعة
+</small>
+
+</div>
+
+
+
+<div>
+
+<strong id="minutes">
+0
+</strong>
+
+<small>
+دقيقة
+</small>
+
+</div>
+
+
+
+<div>
+
+<strong id="seconds">
+0
+</strong>
+
+<small>
+ثانية
+</small>
+
+</div>
+
+
+
+</div>
+
+
+<p>
+📅 01 / 09 / 2026
+</p>
+
+
+<button id="likeBtn" class="like-button">
+
+❤️ أعجبني
+
+</button>
+  
+
+</div>
+
+
+</section>
+  <!-- الإحصائيات -->
+
+<section class="stats-card">
+
+<div>
+<strong id="registrations">
+👤 0
+</strong>
+<span>
+USERS
+</span>
+</div>
+
+
+<div>
+<strong id="visitors">
+🏙️ 0
+</strong>
+<span>
+VISITORS
+</span>
+</div>
+
+
+<div>
+<strong id="likes">
+❤️ 0
+</strong>
+<span>
+LIKES
+</span>
+</div>
+
+</section>
+
+
+
+
+
+
+
+
+<!-- الفيديو والصور -->
+
+
+<section class="app-card">
+
+
+<h2>
+صور وفيديو التطبيق
+</h2>
+
+
+
+<div class="media-row">
+
+
+
+<div class="video-item"
+onclick="openVideo()">
+
+
+
+<img 
+src="assets/video.jpg"
+alt="GOALZON Trailer"
+>
+
+
+<div class="play-btn">
+▶
+</div>
+
+
+</div>
+
+
+
+
+
+<img src="assets/screenshots/1.jpg">
+
+
+
+<img src="assets/screenshots/2.jpg">
+
+
+
+<img src="assets/screenshots/3.jpg">
+
+
+
+<img src="assets/screenshots/4.jpg">
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- لمحة عن التطبيق -->
+
+
+<section class="app-card">
+
+
+<div class="title-row">
+
+
+<h2>
+لمحة عن هذا التطبيق
+</h2>
+
+
+
+<button 
+class="arrow-btn"
+onclick="toggleInfo()">
+
+⌄
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div id="aboutContent">
+
+
+<p>
+
+التطبيق الرياضي الأول في سورية لمتابعة كرة القدم،
+الأخبار، والملخصات.
+
+</p>
+
+
+
+
+
+<h3>
+معلومات التطبيق
+</h3>
+
+
+<p>
+📱 الاسم: GOALZON
+</p>
+
+
+<p>
+📦 الإصدار:
+<span id="version">
+BETA
+</span>
+</p>
+
+
+<p>
+🤖 النظام:
+Android APK
+</p>
+
+
+<p>
+📅 الإطلاق:
+1/9/2026
+</p>
+
+
+
+</div>
+
+
+
+</section>
+  
+<!-- التصنيفات -->
+
+
+<section class="two-boxes">
+
+
+
+<div class="app-card small-card">
+
+<h3>
+⚽ الرياضة
+</h3>
+
+
+<p>
+كرة القدم والأخبار الرياضية
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="app-card small-card">
+
+
+<h3>
+📝 التسجيل المسبق
+</h3>
+
+
+<p>
+احصل على إشعار عند الإطلاق
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- أمان البيانات -->
+
+
+<section class="app-card">
+
+
+<h2>
+🔒 أمان البيانات
+</h2>
+
+
+<p>
+
+نحافظ على خصوصية المستخدمين
+ولا نجمع بيانات غير ضرورية.
+
+</p>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- الدعم -->
+
+
+<section class="app-card support">
+
+
+<h2>
+الدعم والتواصل
+</h2>
+
+
+
+
+<a href="https://www.youtube.com/@GOALZON1"
+target="_blank">
+
+
+<img src="assets/icons/youtube.png">
+
+
+<div>
+
+<b>
+YouTube
+</b>
+
+<br>
+
+@GOALZON1
+
+</div>
+
+
+</a>
+
+
+
+
+
+
+<a href="https://www.instagram.com/goalzon1"
+target="_blank">
+
+
+<img src="assets/icons/instagram.png">
+
+
+<div>
+
+<b>
+Instagram
+</b>
+
+<br>
+
+@goalzon1
+
+</div>
+
+
+</a>
+
+
+
+
+
+
+<a href="#">
+
+
+<img src="assets/icons/whatsapp.png">
+
+
+<div>
+
+<b>
+WhatsApp
+</b>
+
+<br>
+
+لاحقاً
+
+</div>
+
+
+</a>
+
+
+
+
+
+
+
+<a href="mailto:goalzon2027@gmail.com">
+
+
+<img src="assets/icons/gmail.png">
+
+
+<div>
+
+<b>
+Gmail
+</b>
+
+<br>
+
+goalzon2027@gmail.com
+
+</div>
+
+
+</a>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<footer class="app-card">
+
+
+<h2>
+GOALZON
+</h2>
+
+
+<p>
+© 2026 جميع الحقوق محفوظة
+</p>
+
+
+</footer>
+
+
+
+
+
+</main>
+
+
+
+
+<script type="module" src="app.js"></script>
+
+
 </body>
+
 </html>
